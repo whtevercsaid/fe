@@ -6,18 +6,18 @@ import { CustomInput } from 'reactstrap';
 import SidebarAdmin from './SidebarMC';
 import { KONEKSI } from '../../support/config';
 
-class MasterUser extends Component {
-    state = {listUser: [], AddBookImage: 'Unggah Gambar Buku', listProduk: [], EditBookImage: 'Pilih Gambar', selectedEditBookId: 0, searchListProduk: [] }
+class MasterArea extends Component {
+    state = {listArea: [], AddBookImage: 'Unggah Gambar Buku', listProduk: [], EditBookImage: 'Pilih Gambar', selectedEditBookId: 0, searchListProduk: [] }
     
     componentDidMount() {
-        this.getListProduct();
+        this.getListArea();
     }
 
-    getListProduct = () => {
-        axios.get(`http://localhost:2019/master/user`
+    getListArea = () => {
+        axios.get(`http://localhost:2019/master/area`
         ).then((res) => {
-            this.setState({listUser: res.data}); 
-            console.log(this.state.listUser)          
+            this.setState({listArea: res.data}); 
+            console.log(this.state.listArea)          
         }).catch((err) => {
             console.log(err);
         })
@@ -103,9 +103,9 @@ class MasterUser extends Component {
         })
     }
 
-    onBtnDeleteClick = (isbn) => {
+    onBtnDeleteClick = (id) => {
         if(window.confirm('Are you sure to delete?')) {
-            axios.delete(`${KONEKSI}/product/deleteproduct/` + isbn)
+            axios.delete(`http://localhost:2019/master/deletearea/` + id)
             .then((res) => {
                 alert('Delete Success');
                 this.setState({ listProduk: res.data, searchListProduk: res.data })
@@ -134,14 +134,11 @@ class MasterUser extends Component {
     
     renderListJSX = () => {
         //var srcgambar = `${KONEKSI}/images/book`;
-        var listJSX = this.state.listUser.map(item => {
-        var {user_username, user_name, group_spv,user_level, area} = item
+        var listJSX = this.state.listArea.map(item => {
+        var {urutan, area} = item
                 return (
                     <tr  className="text-wrap" style={{fontSize:'12px'}}>                        
-                        <td className="align-middle">{user_username}</td>
-                        <td className="align-middle">{user_name}</td>
-                        <td className="align-middle">{user_level}</td>
-                        <td className="align-middle">{group_spv}</td>
+                        <td className="align-middle">{urutan}</td>
                         <td className="align-middle">{area}</td>
                         <td className="align-middle"><button type="button" className="btn btn-sm btn-warning" onClick={() => this.setState({selectedEditBookId: item.isbn})} ><i className="fas fa-edit"></i></button> {' '}
                         <button type="button" className="btn btn-sm btn-danger" onClick={() => this.onBtnDeleteClick(item.isbn)} ><i className="fas fa-trash-alt"></i></button></td>
@@ -165,7 +162,7 @@ class MasterUser extends Component {
                                 <div className="alert alert-warning media col-12">
                                     <img className="img img-fluid" src="http://localhost:3000/images/flat/046-accounting-1.png" width="90px" />
                                     <div className="col-md-10 media-body">
-                                        <h4>Input Product</h4>
+                                        <h4>Input Area</h4>
                                         <p> Lorem, ipsum dolor sit amet consectetur adipisicing elit. Beatae, cupiditate minima similique quaerat nulla iusto dolorem quam asperiores ratione ex tempore in nemo harum consequatur fuga necessitatibus voluptatem sint dolor. </p>
                                     </div>
                                 </div>
@@ -173,64 +170,16 @@ class MasterUser extends Component {
                                 <div className="row justify-content-sm-left mt-3 ml-1 text-left text-secondary" style={{fontSize:"14px"}} >
                                     <form ref="formLeft" style={{boxShadow:"none"}} className="col-md-6">                                        
                                         <div className="form-group row">
-                                            <label className="col-sm-3 col-form-label">Username</label>
+                                            <label className="col-sm-3 col-form-label">Urutan</label>
                                             <div className="col-sm-9">
-                                                <input type="text" ref="addIsbn" className="form-control form-control-sm" id="inputIsbn" placeholder="Username" required autoFocus/>
+                                                <input type="text" ref="addIsbn" className="form-control form-control-sm" id="inputIsbn" placeholder="Urutan" required autoFocus/>
                                             </div>
                                         </div>
 
-                                        <div className="form-group row">
-                                            <label className="col-sm-3 col-form-label">Nama User</label>
-                                            <div className="col-sm-9">
-                                                <input type="text" ref="addJudul" className="form-control form-control-sm" id="inputJudul" placeholder="Nama User" required />
-                                            </div>
-                                        </div>
-
-                                        <div className="form-group row">
-                                            <label className="col-sm-3 col-form-label">Password</label>
-                                            <div className="col-sm-9">
-                                                <input type="password" ref="addHarga" className="form-control form-control-sm" id="inputHarga" placeholder="Password" required />
-                                            </div>
-                                        </div>
-
-                                        <div className="form-group row">
-                                            <label className="col-sm-3 col-form-label">No Handphone</label>
-                                            <div className="col-sm-9">
-                                                <input type="number" ref="addBerat" className="form-control form-control-sm" id="inputBerat" placeholder="No Handphone" required />
-                                            </div>
-                                        </div>
-
-                                        <div className="form-group row">
-                                            <label className="col-sm-3 col-form-label">Pilihan distributor 1</label>
-                                            <div className="col-sm-9">
-                                                <input type="text" ref="addJumlahHalaman" className="form-control form-control-sm" id="inputJumlahHalaman" placeholder="distributor 1" required />
-                                            </div>
-                                        </div>
-                                        <div className="form-group row">
-                                            <label className="col-sm-3 col-form-label">Pilihan distributor 2</label>
-                                            <div className="col-sm-9">
-                                                <input type="text" ref="addDeskripsi" className="form-control form-control-sm" id="inputDeskripsi" placeholder="distributor 2" required />
-                                            </div>
-                                        </div>                                        
-                                    </form>
-                                    
-                                    <form ref="formRight" style={{boxShadow:"none"}} className="col-md-6">                                            
-                                        <div className="form-group row">
-                                            <label className="col-sm-3 col-form-label">pilihan distributor 3</label>
-                                            <div className="col-sm-9">
-                                            <input type="text" ref="addImage" className="form-control form-control-sm" id="addImage" placeholder="distributor 3" required />
-                                            </div>
-                                        </div>
                                         <div className="form-group row">
                                             <label className="col-sm-3 col-form-label">Area</label>
                                             <div className="col-sm-9">
-                                                <input type="text" ref="addPenulis" className="form-control form-control-sm" id="inputPenulis" placeholder="Area" required />
-                                            </div>
-                                        </div>
-                                        <div className="form-group row">
-                                            <label className="col-sm-3 col-form-label">Level</label>
-                                            <div className="col-sm-9">
-                                                <input type="text" ref="addPenerbit" className="form-control form-control-sm" id="inputPenerbit" placeholder="Level" required />
+                                                <input type="text" ref="addJudul" className="form-control form-control-sm" id="inputJudul" placeholder="Area" required />
                                             </div>
                                         </div>
                                         <div className="form-group row">
@@ -245,8 +194,8 @@ class MasterUser extends Component {
                                 <hr />
 
                                 <div className="card border col-12 pt-2 pb-2">
-                                    <h5 className="text-secondary text-left mt-1"><i class="fas fa-cogs"></i> Manage Users</h5><hr />
-                                    <form style={{boxShadow:"none"}} ref="formSearch">
+                                    <h5 className="text-secondary text-left mt-1"><i class="fas fa-cogs"></i> Manage Area</h5><hr />
+                                        <form style={{boxShadow:"none"}} ref="formSearch">
                                         <div className="form-row">
                                             <div className="form-group col-md-2">
                                                 <input type="text" ref="searchIsbn" className="form-control form-control-sm" id="searchIsbn" placeholder="No. ISBN" />                                                
@@ -265,10 +214,7 @@ class MasterUser extends Component {
                                     <hr />
                                     <table className="table table-hover text-secondary" style={{fontSize:"12px"}}>
                                         <thead>
-                                            <th>Username</th>
-                                            <th>User</th>
-                                            <th>Level</th>
-                                            <th>Distributor</th>
+                                            <th>Urutan</th>
                                             <th>Area</th>
                                             <th>Action</th>
                                         </thead>
@@ -295,4 +241,4 @@ const mapStateToProps = (state) => {
     };
 }
 
-export default connect(mapStateToProps)(MasterUser);
+export default connect(mapStateToProps)(MasterArea);

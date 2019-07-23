@@ -3,7 +3,7 @@ import { Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem, NavLink, Un
 import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Cookies from 'universal-cookie';
-import { onUserLogout, keepLogin, loadOfCart } from '../actions';
+import { onUserLogout, keepLogin    , loadOfCart } from '../actions';
 import Loginku from './LoginKu';
 
 const cookies = new Cookies();
@@ -87,7 +87,7 @@ class HeaderKu extends Component{
                         </NavItem>
                         &nbsp;&nbsp;&nbsp;&nbsp;
                         <NavItem>
-                        <Link to='/manageproduk'><NavLink>Mapping</NavLink></Link>
+                        <Link to='/admin/map'><NavLink>Mapping</NavLink></Link>
                         </NavItem>
                         &nbsp;&nbsp;&nbsp;&nbsp;
                             <NavItem>

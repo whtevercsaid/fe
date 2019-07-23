@@ -10,6 +10,7 @@ import './support/bootstrap/css/bootstrap.min.css';
 import './support/fontawesome-free/css/fontawesome.min.css'
 import './support/fontawesome-free/css/all.min.css';
 import App from './App';
+import FormUploadData from './components/admin/FormUpload'
 import * as serviceWorker from './serviceWorker';
 
 const store = createStore(reducers, {} , applyMiddleware(ReduxThunk));

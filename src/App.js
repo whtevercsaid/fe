@@ -13,6 +13,14 @@ import MasterData from './components/admin/MasterData';
 import MasterCode from './components/admin/MasterCode';
 import DataSales from './components/admin/DataSales';
 import Report from './components/admin/Report';
+import Mapping from './components/admin/mapping';
+import InputProductAdmin from './components/admin/InputProductAdmin';
+import ExCalender from './components/admin/cobakalender';
+import MasterArea from './components/admin/inputUser';
+import InputDT from './components/admin/inputDistributor';
+import principle from './components/admin/principle';
+import pageUploadData from './components/admin/pageUpload';
+import detaildatasales from './components/admin/detaildatasales';
 
 const cookies = new Cookies();
 
@@ -43,6 +51,14 @@ class App extends Component {
             <Route path="/admin/mastercode" component={MasterCode} />
             <Route path="/admin/datasales" component={DataSales} />
             <Route path="/admin/report" component={Report}/>
+            <Route path="/admin/map" component={Mapping}/>
+            <Route path="/admin/inputproduct" component={InputProductAdmin} />
+            <Route path="/admin/calender" component={ExCalender}/>
+            <Route path="/admin/area" component={MasterArea}/>
+            <Route path="/admin/dt" component={InputDT}/>
+            <Route path="/admin/principle" component={principle}/>
+            <Route path ="/admin/upload" component={pageUploadData}/>
+            <Route path ="/datasales/detail" component={detaildatasales}/>
           </div>
 
         </div>

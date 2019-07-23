@@ -13,7 +13,7 @@ class ProductDetailKu extends Component {
 
         axios.get(`${KONEKSI}/product/getproductdetail/${isbn}`)
         .then((res) => {
-            //console.log(res);
+            //console.log(res)
             this.props.select_produk(res.data[0])
         }).catch((err) => {
             // console.log(err)

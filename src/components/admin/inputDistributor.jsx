@@ -6,18 +6,18 @@ import { CustomInput } from 'reactstrap';
 import SidebarAdmin from './SidebarMC';
 import { KONEKSI } from '../../support/config';
 
-class MasterUser extends Component {
-    state = {listUser: [], AddBookImage: 'Unggah Gambar Buku', listProduk: [], EditBookImage: 'Pilih Gambar', selectedEditBookId: 0, searchListProduk: [] }
+class InputDt extends Component {
+    state = {listDT: [], AddBookImage: 'Unggah Gambar Buku', listProduk: [], EditBookImage: 'Pilih Gambar', selectedEditBookId: 0, searchListDT: [] }
     
     componentDidMount() {
-        this.getListProduct();
+        this.getListDT();
     }
 
-    getListProduct = () => {
-        axios.get(`http://localhost:2019/master/user`
+    getListDT = () => {
+        axios.get(`http://localhost:2019/master/distributor`
         ).then((res) => {
-            this.setState({listUser: res.data}); 
-            console.log(this.state.listUser)          
+            this.setState({listDT: res.data, searchListDT:res.data}); 
+            console.log(this.state.listDT)          
         }).catch((err) => {
             console.log(err);
         })
@@ -119,30 +119,30 @@ class MasterUser extends Component {
     }
 
     onBtnSearchClick = () => {
-        var isbn  = this.refs.searchIsbn.value;
-        var penulis = this.refs.searchPenulis.value;
-        var judul = this.refs.searchJudul.value;
+        var nama  = this.refs.searchNama.value;
+        var kode2 = this.refs.searchPrinciple.value;
+        var kode3 = this.refs.searchArea.value;
 
-        var arrSearch = this.state.listProduk.filter((item) => {
-            return item.isbn.includes(isbn) 
-            && item.judul.toLowerCase().includes(judul.toLowerCase())
-            && item.penulis.toLowerCase().includes(penulis.toLowerCase());
+        var arrSearch = this.state.listDT.filter((item) => {
+            return item.nama.includes(nama) 
+            && item.kode2.toLowerCase().includes(kode2.toLowerCase())
+            && item.kode3.toLowerCase().includes(kode3.toLowerCase());
         })
-        this.setState({searchListProduk: arrSearch})
-        console.log(this.state.searchListProduk)
+        this.setState({searchListDT: arrSearch})
+        console.log(this.state.searchListDT)
     }
     
     renderListJSX = () => {
         //var srcgambar = `${KONEKSI}/images/book`;
-        var listJSX = this.state.listUser.map(item => {
-        var {user_username, user_name, group_spv,user_level, area} = item
+        var listJSX = this.state.listDT.map(item => {
+        var {distributor, principle, area,urutan, dt_id} = item
                 return (
                     <tr  className="text-wrap" style={{fontSize:'12px'}}>                        
-                        <td className="align-middle">{user_username}</td>
-                        <td className="align-middle">{user_name}</td>
-                        <td className="align-middle">{user_level}</td>
-                        <td className="align-middle">{group_spv}</td>
+                        <td className="align-middle">{urutan}</td>
+                        <td className="align-middle">{dt_id}</td>
+                        <td className="align-middle">{distributor}</td>
                         <td className="align-middle">{area}</td>
+                        <td className="align-middle">{principle}</td>
                         <td className="align-middle"><button type="button" className="btn btn-sm btn-warning" onClick={() => this.setState({selectedEditBookId: item.isbn})} ><i className="fas fa-edit"></i></button> {' '}
                         <button type="button" className="btn btn-sm btn-danger" onClick={() => this.onBtnDeleteClick(item.isbn)} ><i className="fas fa-trash-alt"></i></button></td>
                     </tr>
@@ -165,7 +165,7 @@ class MasterUser extends Component {
                                 <div className="alert alert-warning media col-12">
                                     <img className="img img-fluid" src="http://localhost:3000/images/flat/046-accounting-1.png" width="90px" />
                                     <div className="col-md-10 media-body">
-                                        <h4>Input Product</h4>
+                                        <h4>Input Distributor</h4>
                                         <p> Lorem, ipsum dolor sit amet consectetur adipisicing elit. Beatae, cupiditate minima similique quaerat nulla iusto dolorem quam asperiores ratione ex tempore in nemo harum consequatur fuga necessitatibus voluptatem sint dolor. </p>
                                     </div>
                                 </div>
@@ -173,66 +173,33 @@ class MasterUser extends Component {
                                 <div className="row justify-content-sm-left mt-3 ml-1 text-left text-secondary" style={{fontSize:"14px"}} >
                                     <form ref="formLeft" style={{boxShadow:"none"}} className="col-md-6">                                        
                                         <div className="form-group row">
-                                            <label className="col-sm-3 col-form-label">Username</label>
+                                            <label className="col-sm-3 col-form-label">Urutan</label>
                                             <div className="col-sm-9">
-                                                <input type="text" ref="addIsbn" className="form-control form-control-sm" id="inputIsbn" placeholder="Username" required autoFocus/>
+                                                <input type="text" ref="addIsbn" className="form-control form-control-sm" id="inputIsbn" placeholder="Urutan" required autoFocus/>
                                             </div>
                                         </div>
 
                                         <div className="form-group row">
-                                            <label className="col-sm-3 col-form-label">Nama User</label>
+                                            <label className="col-sm-3 col-form-label">Nama Distributor</label>
                                             <div className="col-sm-9">
-                                                <input type="text" ref="addJudul" className="form-control form-control-sm" id="inputJudul" placeholder="Nama User" required />
+                                                <input type="text" ref="addJudul" className="form-control form-control-sm" id="inputJudul" placeholder="Nama Distributor" required />
                                             </div>
                                         </div>
 
                                         <div className="form-group row">
-                                            <label className="col-sm-3 col-form-label">Password</label>
+                                            <label className="col-sm-3 col-form-label">Principle</label>
                                             <div className="col-sm-9">
-                                                <input type="password" ref="addHarga" className="form-control form-control-sm" id="inputHarga" placeholder="Password" required />
+                                                <input type="password" ref="addHarga" className="form-control form-control-sm" id="inputHarga" placeholder="Principle" required />
                                             </div>
                                         </div>
 
-                                        <div className="form-group row">
-                                            <label className="col-sm-3 col-form-label">No Handphone</label>
-                                            <div className="col-sm-9">
-                                                <input type="number" ref="addBerat" className="form-control form-control-sm" id="inputBerat" placeholder="No Handphone" required />
-                                            </div>
-                                        </div>
-
-                                        <div className="form-group row">
-                                            <label className="col-sm-3 col-form-label">Pilihan distributor 1</label>
-                                            <div className="col-sm-9">
-                                                <input type="text" ref="addJumlahHalaman" className="form-control form-control-sm" id="inputJumlahHalaman" placeholder="distributor 1" required />
-                                            </div>
-                                        </div>
-                                        <div className="form-group row">
-                                            <label className="col-sm-3 col-form-label">Pilihan distributor 2</label>
-                                            <div className="col-sm-9">
-                                                <input type="text" ref="addDeskripsi" className="form-control form-control-sm" id="inputDeskripsi" placeholder="distributor 2" required />
-                                            </div>
-                                        </div>                                        
-                                    </form>
-                                    
-                                    <form ref="formRight" style={{boxShadow:"none"}} className="col-md-6">                                            
-                                        <div className="form-group row">
-                                            <label className="col-sm-3 col-form-label">pilihan distributor 3</label>
-                                            <div className="col-sm-9">
-                                            <input type="text" ref="addImage" className="form-control form-control-sm" id="addImage" placeholder="distributor 3" required />
-                                            </div>
-                                        </div>
                                         <div className="form-group row">
                                             <label className="col-sm-3 col-form-label">Area</label>
                                             <div className="col-sm-9">
-                                                <input type="text" ref="addPenulis" className="form-control form-control-sm" id="inputPenulis" placeholder="Area" required />
+                                                <input type="number" ref="addBerat" className="form-control form-control-sm" id="inputBerat" placeholder="Area" required />
                                             </div>
                                         </div>
-                                        <div className="form-group row">
-                                            <label className="col-sm-3 col-form-label">Level</label>
-                                            <div className="col-sm-9">
-                                                <input type="text" ref="addPenerbit" className="form-control form-control-sm" id="inputPenerbit" placeholder="Level" required />
-                                            </div>
-                                        </div>
+
                                         <div className="form-group row">
                                             <div className="col-sm-9 offset-sm-3">
                                                 <button type="button" class="btn btn-success btn-sm col-12" onClick={this.onBtnAddClick} ><i class="fas fa-plus-circle"></i> Add </button>
@@ -245,32 +212,31 @@ class MasterUser extends Component {
                                 <hr />
 
                                 <div className="card border col-12 pt-2 pb-2">
-                                    <h5 className="text-secondary text-left mt-1"><i class="fas fa-cogs"></i> Manage Users</h5><hr />
+                                    <h5 className="text-secondary text-left mt-1"><i class="fas fa-cogs"></i> Manage Distributor</h5><hr />
                                     <form style={{boxShadow:"none"}} ref="formSearch">
                                         <div className="form-row">
                                             <div className="form-group col-md-2">
-                                                <input type="text" ref="searchIsbn" className="form-control form-control-sm" id="searchIsbn" placeholder="No. ISBN" />                                                
+                                                <input type="text" ref="searchNama" className="form-control form-control-sm" id="searchhNama" placeholder="Nama DT" />                                                
                                             </div>
                                             <div className="form-group col-md-3">
-                                                <input type="text" ref="searchJudul" className="form-control form-control-sm" id="searchJudul" placeholder="Judul Buku" />                                                
+                                                <input type="text" ref="searchArea" className="form-control form-control-sm" id="searchArea" placeholder="Area" />                                                
                                             </div>
                                             <div className="form-group col-md-3">
-                                                <input type="text" ref="searchPenulis" className="form-control form-control-sm" id="searchPenulis" placeholder="Nama Penulis" />                                                
+                                                <input type="text" ref="searchPrinciple" className="form-control form-control-sm" id="searchPrinciple" placeholder="Nama Principle" />                                                
                                             </div>
                                             <div className="form-group col-md-1">
-                                                <button type="button" ref="btnSearch" className="btn btn-success btn-sm" id="searchIsbn" onClick={() => {this.onBtnSearchClick()}} ><i class="fas fa-search"></i> Cari</button>                                                
+                                                <button type="button" ref="btnSearch" className="btn btn-success btn-sm" id="searchNama" onClick={() => {this.onBtnSearchClick()}} ><i class="fas fa-search"></i> Cari</button>                                                
                                             </div>
                                         </div>                                        
                                     </form>
                                     <hr />
                                     <table className="table table-hover text-secondary" style={{fontSize:"12px"}}>
                                         <thead>
-                                            <th>Username</th>
-                                            <th>User</th>
-                                            <th>Level</th>
-                                            <th>Distributor</th>
+                                            <th>Urutan</th>
+                                            <th>distributor id</th>
+                                            <th>Nama</th>
                                             <th>Area</th>
-                                            <th>Action</th>
+                                            <th>Principle</th>
                                         </thead>
                                         <tbody>
                                             {this.renderListJSX()}
@@ -295,4 +261,4 @@ const mapStateToProps = (state) => {
     };
 }
 
-export default connect(mapStateToProps)(MasterUser);
+export default connect(mapStateToProps)(InputDt);
